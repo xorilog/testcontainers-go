@@ -16,9 +16,9 @@ type nginxContainer struct {
 
 func startContainer(ctx context.Context) (*nginxContainer, error) {
 	req := testcontainers.ContainerRequest{
-		Image:        "docker.io/nginxinc/nginx-unprivileged",
-		ExposedPorts: []string{"8080/tcp"},
-		WaitingFor:   wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
+		Image: "docker.io/nginxinc/nginx-unprivileged",
+		//ExposedPorts: []string{"8080/tcp"},
+		WaitingFor: wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ProviderType:     testcontainers.ProviderPodman,
