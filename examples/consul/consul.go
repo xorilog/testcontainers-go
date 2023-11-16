@@ -24,6 +24,7 @@ func startContainer(ctx context.Context) (*consulContainer, error) {
 		WaitingFor:   wait.ForListeningPort("8500/tcp"),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ProviderType:     testcontainers.ProviderPodman,
 		ContainerRequest: req,
 		Started:          true,
 	})

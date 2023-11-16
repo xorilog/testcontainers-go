@@ -23,6 +23,7 @@ func startContainer(ctx context.Context) (*cockroachDBContainer, error) {
 		Cmd:          []string{"start-single-node", "--insecure"},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ProviderType:     testcontainers.ProviderPodman,
 		ContainerRequest: req,
 		Started:          true,
 	})

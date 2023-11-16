@@ -16,11 +16,12 @@ type nginxContainer struct {
 
 func startContainer(ctx context.Context) (*nginxContainer, error) {
 	req := testcontainers.ContainerRequest{
-		Image:        "nginx",
-		ExposedPorts: []string{"80/tcp"},
+		Image:        "docker.io/nginxinc/nginx-unprivileged",
+		ExposedPorts: []string{"8080/tcp"},
 		WaitingFor:   wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ProviderType:     testcontainers.ProviderPodman,
 		ContainerRequest: req,
 		Started:          true,
 	})
@@ -33,7 +34,7 @@ func startContainer(ctx context.Context) (*nginxContainer, error) {
 		return nil, err
 	}
 
-	mappedPort, err := container.MappedPort(ctx, "80")
+	mappedPort, err := container.MappedPort(ctx, "8080")
 	if err != nil {
 		return nil, err
 	}

@@ -28,6 +28,7 @@ func startContainer(ctx context.Context, network string, networkAlias []string) 
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ProviderType:     testcontainers.ProviderPodman,
 		ContainerRequest: req,
 		Started:          true,
 	})
