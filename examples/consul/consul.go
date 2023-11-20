@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	dockerc "github.com/docker/docker/api/types/container"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -22,6 +23,9 @@ func startContainer(ctx context.Context) (*consulContainer, error) {
 		Name:         "badger",
 		Cmd:          []string{"agent", "-server", "-ui", "-node=server-1", "-bootstrap-expect=1", "-client=0.0.0.0"},
 		WaitingFor:   wait.ForListeningPort("8500/tcp"),
+		HostConfigModifier: func(config *dockerc.HostConfig) {
+			config.NetworkMode = "bridge"
+		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ProviderType:     testcontainers.ProviderPodman,

@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/jackc/pgx/v4/stdlib"
 
+	dockerc "github.com/docker/docker/api/types/container"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -21,6 +22,9 @@ func startContainer(ctx context.Context) (*cockroachDBContainer, error) {
 		ExposedPorts: []string{"26257/tcp", "8080/tcp"},
 		WaitingFor:   wait.ForHTTP("/health").WithPort("8080"),
 		Cmd:          []string{"start-single-node", "--insecure"},
+		HostConfigModifier: func(config *dockerc.HostConfig) {
+			config.NetworkMode = "bridge"
+		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ProviderType:     testcontainers.ProviderPodman,

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	dockerc "github.com/docker/docker/api/types/container"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -16,9 +17,12 @@ type nginxContainer struct {
 
 func startContainer(ctx context.Context) (*nginxContainer, error) {
 	req := testcontainers.ContainerRequest{
-		Image: "docker.io/nginxinc/nginx-unprivileged",
-		//ExposedPorts: []string{"8080/tcp"},
-		WaitingFor: wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
+		Image:        "docker.io/nginxinc/nginx-unprivileged",
+		ExposedPorts: []string{"8080/tcp"},
+		WaitingFor:   wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
+		HostConfigModifier: func(config *dockerc.HostConfig) {
+			config.NetworkMode = "bridge"
+		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ProviderType:     testcontainers.ProviderPodman,

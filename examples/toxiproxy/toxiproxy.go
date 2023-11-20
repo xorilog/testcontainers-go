@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	dockerc "github.com/docker/docker/api/types/container"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -25,6 +26,9 @@ func startContainer(ctx context.Context, network string, networkAlias []string) 
 		},
 		NetworkAliases: map[string][]string{
 			network: networkAlias,
+		},
+		HostConfigModifier: func(config *dockerc.HostConfig) {
+			config.NetworkMode = "bridge"
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

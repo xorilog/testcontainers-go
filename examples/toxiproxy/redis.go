@@ -3,6 +3,7 @@ package toxiproxy
 import (
 	"context"
 
+	dockerc "github.com/docker/docker/api/types/container"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -21,6 +22,9 @@ func setupRedis(ctx context.Context, network string, networkAlias []string) (*re
 		},
 		NetworkAliases: map[string][]string{
 			network: networkAlias,
+		},
+		HostConfigModifier: func(config *dockerc.HostConfig) {
+			config.NetworkMode = "bridge"
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
