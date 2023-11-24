@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	dockerc "github.com/docker/docker/api/types/container"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -22,9 +23,9 @@ func startContainer(ctx context.Context) (*nginxContainer, error) {
 		Networks: []string{
 			"podman",
 		},
-		// HostConfigModifier: func(config *dockerc.HostConfig) {
-		// 	config.NetworkMode = "bridge"
-		// },
+		HostConfigModifier: func(config *dockerc.HostConfig) {
+			config.NetworkMode = "internal"
+		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ProviderType:     testcontainers.ProviderPodman,
