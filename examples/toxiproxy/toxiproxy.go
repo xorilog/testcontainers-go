@@ -28,7 +28,7 @@ func startContainer(ctx context.Context, network string, networkAlias []string) 
 			network: networkAlias,
 		},
 		HostConfigModifier: func(config *dockerc.HostConfig) {
-			config.NetworkMode = "bridge"
+			config.NetworkMode = "slirp4netns"
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
