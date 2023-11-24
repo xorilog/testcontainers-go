@@ -20,6 +20,9 @@ func startContainer(ctx context.Context) (*nginxContainer, error) {
 		Image:        "docker.io/nginxinc/nginx-unprivileged",
 		ExposedPorts: []string{"8080/tcp"},
 		WaitingFor:   wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
+		Networks: []string{
+			"slirp4netns",
+		},
 		HostConfigModifier: func(config *dockerc.HostConfig) {
 			config.NetworkMode = "bridge"
 		},

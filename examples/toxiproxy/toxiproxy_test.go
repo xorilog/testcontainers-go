@@ -19,7 +19,7 @@ func TestToxiproxy(t *testing.T) {
 	newNetwork, err := testcontainers.GenericNetwork(ctx, testcontainers.GenericNetworkRequest{
 		ProviderType: testcontainers.ProviderDocker,
 		NetworkRequest: testcontainers.NetworkRequest{
-			Name:           "newNetwork",
+			Name:           "slirp4netns",
 			CheckDuplicate: true,
 		},
 	})

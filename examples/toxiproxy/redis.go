@@ -23,6 +23,7 @@ func setupRedis(ctx context.Context, network string, networkAlias []string) (*re
 		NetworkAliases: map[string][]string{
 			network: networkAlias,
 		},
+
 		HostConfigModifier: func(config *dockerc.HostConfig) {
 			config.NetworkMode = "bridge"
 		},

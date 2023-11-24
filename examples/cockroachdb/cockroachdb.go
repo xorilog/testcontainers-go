@@ -22,6 +22,9 @@ func startContainer(ctx context.Context) (*cockroachDBContainer, error) {
 		ExposedPorts: []string{"26257/tcp", "8080/tcp"},
 		WaitingFor:   wait.ForHTTP("/health").WithPort("8080"),
 		Cmd:          []string{"start-single-node", "--insecure"},
+		Networks: []string{
+			"slirp4netns",
+		},
 		HostConfigModifier: func(config *dockerc.HostConfig) {
 			config.NetworkMode = "bridge"
 		},
