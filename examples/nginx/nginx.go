@@ -24,7 +24,7 @@ func startContainer(ctx context.Context) (*nginxContainer, error) {
 			"podman",
 		},
 		HostConfigModifier: func(config *dockerc.HostConfig) {
-			config.NetworkMode = "internal"
+			config.NetworkMode = "bridge"
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
