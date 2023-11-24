@@ -21,10 +21,10 @@ func startContainer(ctx context.Context) (*nginxContainer, error) {
 		ExposedPorts: []string{"8080/tcp"},
 		WaitingFor:   wait.ForHTTP("/").WithStartupTimeout(10 * time.Second),
 		Networks: []string{
-			"slirp4netns",
+			"podman",
 		},
 		HostConfigModifier: func(config *dockerc.HostConfig) {
-			config.NetworkMode = "slirp4netns"
+			config.NetworkMode = "bridge"
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{

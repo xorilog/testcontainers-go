@@ -23,10 +23,10 @@ func startContainer(ctx context.Context) (*cockroachDBContainer, error) {
 		WaitingFor:   wait.ForHTTP("/health").WithPort("8080"),
 		Cmd:          []string{"start-single-node", "--insecure"},
 		Networks: []string{
-			"slirp4netns",
+			"podman",
 		},
 		HostConfigModifier: func(config *dockerc.HostConfig) {
-			config.NetworkMode = "slirp4netns"
+			config.NetworkMode = "bridge"
 		},
 	}
 	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
